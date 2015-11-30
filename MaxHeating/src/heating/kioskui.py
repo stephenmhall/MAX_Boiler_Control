@@ -60,22 +60,25 @@ class CreateUIPage():
         currentTime = time.time()
         timeLimit = currentTime - 86400
         boilerStates = DB.getTimedBoiler(timeLimit)
-        
-        startTime  = float(boilerStates[0][1])
-        startState = boilerStates[0][2]
-        timeBoilerOn  = 0
-        timeBoilerOff = 0
-        
-        for i in range(1, len(boilerStates)):
-            stateTime = float(boilerStates[i][1]) - startTime
-            if startState == 1:
-                timeBoilerOn  += stateTime
-            else:
-                timeBoilerOff += stateTime
-            startTime  = float(boilerStates[i][1])
-            startState = boilerStates[i][2]
-        
-        dutyCycle = 100 / ((timeBoilerOn + timeBoilerOff) / timeBoilerOn)
+        try:
+            startTime  = float(boilerStates[0][1])
+            startState = boilerStates[0][2]
+            
+            timeBoilerOn  = 0
+            timeBoilerOff = 0
+            
+            for i in range(1, len(boilerStates)):
+                stateTime = float(boilerStates[i][1]) - startTime
+                if startState == 1:
+                    timeBoilerOn  += stateTime
+                else:
+                    timeBoilerOff += stateTime
+                startTime  = float(boilerStates[i][1])
+                startState = boilerStates[i][2]
+            
+            dutyCycle = 100 / ((timeBoilerOn + timeBoilerOff) / timeBoilerOn)
+        except:
+            dutyCycle = 0
         return int(dutyCycle)
     
     def getCurrentOutsidetemp(self):
@@ -85,7 +88,7 @@ class CreateUIPage():
             parsed_json = json.loads(json_string)
             #location = parsed_json['location']['city']
             temp_c = parsed_json['current_observation']['temp_c']
-            print "Current temperature is: %s" % ( temp_c)
+            #print "Current temperature is: %s" % ( temp_c)
             f.close()
             return temp_c
         except:

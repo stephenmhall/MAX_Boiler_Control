@@ -72,7 +72,8 @@ class DbUtils():
                          time TEXT,
                          SetTemp TEXT,
                          ActTemp TEXT,
-                         ValvePos INTEGER)
+                         ValvePos INTEGER,
+                         OutsideTemp TEXT)
                         """)
         
         with conn:
@@ -84,8 +85,8 @@ class DbUtils():
         conn = sqlite3.connect(dataBase)
         cursor = conn.cursor()
         with conn:
-            cursor.executemany("INSERT or REPLACE into temps(ID,RoomName,time,SetTemp,ActTemp,ValvePos)\
-                                VALUES(NULL, ?, ?, ?, ?, ?)", msg)
+            cursor.executemany("INSERT or REPLACE into temps(ID,RoomName,time,SetTemp,ActTemp,ValvePos,OutsideTemp)\
+                                VALUES(NULL, ?, ?, ?, ?, ?, ?)", msg)
             
             
     def updateCube(self, msg):

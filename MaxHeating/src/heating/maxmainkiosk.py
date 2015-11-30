@@ -275,20 +275,18 @@ class MainWindow():
         Vera_Device = Vera_Variables[4]
         
         roomTemps = CUI.createRooms()
+        outsideTemp = CUI.getCurrentOutsidetemp()
         
-        # Update Temps database
-        DB.insertTemps(roomTemps)
+        for i in range (len(roomTemps)):
+            roomTemps[i] = roomTemps[i] + (str(outsideTemp),)
 
         # Calculate if heat is required
         valveList = []
         for room in roomTemps:
             valveList.append(room[4])
-        #print valveList
+
         singleRadOn = sum(i >= 80 for i in valveList)
         multiradOn  = sum(i >= 60 for i in valveList)
-        
-        #print singleRadOn
-        #print multiradOn
         
         if singleRadOn >= 1 or multiradOn >= 2:
             boilerState = 1

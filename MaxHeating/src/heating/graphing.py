@@ -51,7 +51,7 @@ class MakeGraph():
         pageText.append("""function drawVisualization() {
             // Some raw data (not necessarily accurate)
             var data = google.visualization.arrayToDataTable([
-                ['Time', 'SetPoint', 'Temperature', 'Boiler',  'Valve %'],
+                ['Time', 'SetPoint', 'Temperature', 'Outside Temp', 'Boiler',  'Valve %'],
                 """)
         lastTemp = 0.0
         for lines in tempData:
@@ -59,6 +59,10 @@ class MakeGraph():
             setPoint = lines[3]
             realTemp = float(lines[4])
             valvePos = lines[5] / 10.0
+            outsideTemp = lines[6]
+
+            if outsideTemp == None:
+                outsideTemp = 0
             
             # Exclude Zero Temperature values
             if realTemp > 0.0:
@@ -73,8 +77,8 @@ class MakeGraph():
                     break
                 
             timeString = (datetime.datetime.fromtimestamp(float(tempTime)).strftime('%d %H:%M'))
-            pageText.append("""['{}', {}, {}, {}, {}],
-            """.format(timeString,setPoint,realTemp,boilerOn,valvePos))
+            pageText.append("""['{}', {}, {}, {}, {}, {}],
+            """.format(timeString,setPoint,realTemp,outsideTemp,boilerOn,valvePos))
         pageText.append("""]);
         """)
         html_text = ''.join(pageText)
@@ -87,8 +91,8 @@ class MakeGraph():
             seriesType: 'line',
             interpolateNulls: true,
             series: {{
-                2: {{type: 'area'}},
-                3: {{type: 'area'}}
+                3: {{type: 'area'}},
+                4: {{type: 'area'}}
             }}
         }};
              """.format(roomName)
