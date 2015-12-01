@@ -1,4 +1,7 @@
 # MAX_Boiler_Control
+
+I appear to have broken Graphing. Will fix asap
+
 Python and Arduino code for 433Mhz control of wireless boiler from Max Cube
 
 Files include folders for Bootstrap switches which may or may not get used in the project. Web UI uses Bootstrap theme from the internet so a net connection is required. It may be possible to host the files locally on the RPi but I have not looked into this yet, This would probably speed up web page creation.
